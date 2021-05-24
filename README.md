@@ -7,4 +7,5 @@ Insert your name on the list below:
 
 1. Lucas Gomes
 2. Gustavo Araujo
-3.Jorge Henrique de Barros Assumpção
+3. Jorge Henrique de Barros Assumpção
+4. Willes Reis
