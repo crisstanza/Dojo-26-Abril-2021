@@ -77,8 +77,16 @@ function computerPlay() {
 function checkIsGameOver() {
 	for (let i = 0 ; i < boardSize ; i++) {
 		let tr = board.rows[i];
+		let xCount = 0
+		let oCount = 0
 		for (let j = 0 ; j < boardSize ; j++) {
 			let td = tr.cells[j];
+			if (td.innerHTML === 'x') {
+				xCount++
+			}
+			if (td.innerHTML === 'o') {
+				oCount++
+			}
 			if (!td.innerHTML)
 				return false;
 		}
