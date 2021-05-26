@@ -1,4 +1,4 @@
-let board, boardSize, playerPiece, machine;
+let board, boardSize, playerPiece, machine, counter;
 
 // TODO: impedir jogador humano de jogar durante este delay (aumente-o para testar com mais facilidade)
 const DELAY_BEFORE_COMPUTER_PLAY = 250;
@@ -6,6 +6,8 @@ const DELAY_BEFORE_COMPUTER_PLAY = 250;
 function btStart_OnClick(event) {
 	mainDisplay.innerHTML = '';
 	mainOutput.innerHTML = '';
+
+	counter = 0;
 
 	let checkedPlayer = player.find(player => player.checked);
 	playerPiece = checkedPlayer.value;
@@ -41,6 +43,7 @@ function td_OnClick(line, column) {
 	let td = tr.cells[column];
 	if (td.innerHTML)
 		return;
+	counter++;
 	td.innerHTML = playerPiece;
 	td.classList.add('fade-in');
 	let isGameOver = checkIsGameOver();
@@ -57,6 +60,7 @@ function gameOver() {
 
 function computerPlay() {
 	machine.move(board);
+	counter++;
 	let isGameOver = checkIsGameOver();
 	if (isGameOver)
 		gameOver();
@@ -74,21 +78,25 @@ function computerPlay() {
 })();
 
 // TODO: implementar o fim do jogo caso algum jogador ganhe a partida
-function checkIsGameOver() {
+function checkIsGameOver(x, y) {
+	if (counter == (boardSize * boardSize)) {
+		return true;
+	}
+
 	for (let i = 0 ; i < boardSize ; i++) {
 		let tr = board.rows[i];
 		let xCount = 0
 		let oCount = 0
 		for (let j = 0 ; j < boardSize ; j++) {
 			let td = tr.cells[j];
+			if (!td.innerHTML)
+				return false;
 			if (td.innerHTML === 'x') {
 				xCount++
 			}
 			if (td.innerHTML === 'o') {
 				oCount++
 			}
-			if (!td.innerHTML)
-				return false;
 		}
 	}
 	return true;
