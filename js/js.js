@@ -46,7 +46,7 @@ function td_OnClick(line, column) {
 	counter++;
 	td.innerHTML = playerPiece;
 	td.classList.add('fade-in');
-	let isGameOver = checkIsGameOver();
+	let isGameOver = checkIsGameOver(line, column);
 	if (isGameOver)
 		gameOver();
 	else
@@ -59,9 +59,9 @@ function gameOver() {
 }
 
 function computerPlay() {
-	machine.move(board);
+	const positions = machine.move(board);
 	counter++;
-	let isGameOver = checkIsGameOver();
+	let isGameOver = checkIsGameOver(positions.line, positions.column);
 	if (isGameOver)
 		gameOver();
 }
@@ -80,51 +80,41 @@ function computerPlay() {
 // TODO: implementar o fim do jogo caso algum jogador ganhe a partida
 function checkIsGameOver(x, y) {
 	if (counter == (boardSize * boardSize)) {
+		console.log('terminou com board completo')
 		return true;
 	}
 
 	let lastPiece = board.rows[x].cells[y].innerHTML;
 	let hasWinner = true;
-	if (x === y) {
-		for (let i = 0; hasWinner && i < boardSize; i++) {
-			if (board.rows[i].cells[i].innerHTML != lastPiece) {
-				hasWinner = false
-			}
-		}
-		for (let i = 0; hasWinner && i < boardSize; i++) {
-			if (board.rows[i].cells[i].innerHTML != lastPiece) {
-				hasWinner = false
-			}
-		}
-	}
+	// if (x === y) {
+	// 	for (let i = 0; hasWinner && i < boardSize; i++) {
+	// 		if (board.rows[i].cells[i].innerHTML != lastPiece) {
+	// 			hasWinner = false
+	// 		}
+	// 	}
+	// 	for (let i = 0; hasWinner && i < boardSize; i++) {
+	// 		if (board.rows[i].cells[i].innerHTML != lastPiece) {
+	// 			hasWinner = false
+	// 		}
+	// 	}
+	// }
 	for (let i = 0; hasWinner && i < boardSize; i++) {
 		if (board.rows[x].cells[i].innerHTML != lastPiece) {
 			hasWinner = false
 		}
 	}
+
 	for (let i = 0; hasWinner && i < boardSize; i++) {
 		if (board.rows[i].cells[y].innerHTML != lastPiece) {
 			hasWinner = false
 		}
 	}
 
-	for (let i = 0; i < boardSize; i++) {
-		let tr = board.rows[i];
-		let xCount = 0
-		let oCount = 0
-		for (let j = 0; j < boardSize; j++) {
-			let td = tr.cells[j];
-			if (!td.innerHTML)
-				return false;
-			if (td.innerHTML === 'x') {
-				xCount++
-			}
-			if (td.innerHTML === 'o') {
-				oCount++
-			}
-		}
+	if (hasWinner === true) {
+		console.log('terminou com um vencedor')
 	}
-	return true;
+
+	return hasWinner
 }
 
 // TODO: retornar o verdadeiro vencedor ou "empate"

@@ -11,7 +11,7 @@ Fifo.prototype.move = function(board) {
 			if (!td.innerHTML) {
 				td.innerHTML = this.piece;
 				td.classList.add('fade-in');
-				return;
+				return { line: i, column: j };
 			}
 		}
 	}

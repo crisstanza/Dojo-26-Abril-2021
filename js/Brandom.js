@@ -14,6 +14,7 @@ Brandom.prototype.move = function(board) {
 			td.innerHTML = this.piece;
 			td.classList.add('fade-in');
 			foundFree = true;
+			return { line, column };
 		}
 	}
 };
