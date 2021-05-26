@@ -22,12 +22,12 @@ function btStart_OnClick(event) {
 	computerName = checkedComputer.value;
 	machine = eval('new ' + computerName + '(computerPiece, boardSize)');
 
-	let table = io.github.crisstanza.Creator.html('table', {class: 'fade-in'}, mainDisplay);
-	for (let i = 0 ; i < boardSize ; i++) {
+	let table = io.github.crisstanza.Creator.html('table', { class: 'fade-in' }, mainDisplay);
+	for (let i = 0; i < boardSize; i++) {
 		let tr = io.github.crisstanza.Creator.html('tr', null, table);
-		for (let j = 0 ; j < boardSize ; j++) {
-			let td = io.github.crisstanza.Creator.html('td', {title: i + ', ' + j}, tr);
-			td.addEventListener('click', function() { td_OnClick(i, j); });
+		for (let j = 0; j < boardSize; j++) {
+			let td = io.github.crisstanza.Creator.html('td', { title: i + ', ' + j }, tr);
+			td.addEventListener('click', function () { td_OnClick(i, j); });
 		}
 	}
 	board = table;
@@ -66,7 +66,7 @@ function computerPlay() {
 		gameOver();
 }
 
-(function() {
+(function () {
 
 	function init(event) {
 		// descomente a linha abaixo para facilitar os testes
@@ -83,11 +83,36 @@ function checkIsGameOver(x, y) {
 		return true;
 	}
 
-	for (let i = 0 ; i < boardSize ; i++) {
+	let lastPiece = board.rows[x].cells[y].innerHTML;
+	let hasWinner = true;
+	if (x === y) {
+		for (let i = 0; hasWinner && i < boardSize; i++) {
+			if (board.rows[i].cells[i].innerHTML != lastPiece) {
+				hasWinner = false
+			}
+		}
+		for (let i = 0; hasWinner && i < boardSize; i++) {
+			if (board.rows[i].cells[i].innerHTML != lastPiece) {
+				hasWinner = false
+			}
+		}
+	}
+	for (let i = 0; hasWinner && i < boardSize; i++) {
+		if (board.rows[x].cells[i].innerHTML != lastPiece) {
+			hasWinner = false
+		}
+	}
+	for (let i = 0; hasWinner && i < boardSize; i++) {
+		if (board.rows[i].cells[y].innerHTML != lastPiece) {
+			hasWinner = false
+		}
+	}
+
+	for (let i = 0; i < boardSize; i++) {
 		let tr = board.rows[i];
 		let xCount = 0
 		let oCount = 0
-		for (let j = 0 ; j < boardSize ; j++) {
+		for (let j = 0; j < boardSize; j++) {
 			let td = tr.cells[j];
 			if (!td.innerHTML)
 				return false;
