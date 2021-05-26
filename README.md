@@ -15,4 +15,4 @@ https://crisstanza.github.io/Dojo-26-Maio-2021/
 ### Usage
 
 	cd <PROJECT PATH>
-	browser-sync start --server --files **/*
+	browser-sync start --server --files .
