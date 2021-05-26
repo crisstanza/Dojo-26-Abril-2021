@@ -1,9 +1,10 @@
-let board, boardSize, playerPiece, machine, counter;
+let board, boardSize, playerPiece, machine, counter, status = 'stopped';
 
 // TODO: impedir jogador humano de jogar durante este delay (aumente-o para testar com mais facilidade)
 const DELAY_BEFORE_COMPUTER_PLAY = 250;
 
 function btStart_OnClick(event) {
+	status = 'running';
 	mainDisplay.innerHTML = '';
 	mainOutput.innerHTML = '';
 
@@ -39,6 +40,11 @@ function btStart_OnClick(event) {
 }
 
 function td_OnClick(line, column) {
+	if (status !== 'running') {
+		mainOutput.classList.add('fade-in');
+		return;
+	}
+
 	let tr = board.rows[line];
 	let td = tr.cells[column];
 	if (td.innerHTML)
@@ -46,24 +52,24 @@ function td_OnClick(line, column) {
 	counter++;
 	td.innerHTML = playerPiece;
 	td.classList.add('fade-in');
-	let status = checkIsGameOver(line, column);
+	checkIsGameOver(line, column);
 	if (status != 'running')
-		gameOver(status);
+		gameOver();
 	else
 		setTimeout(computerPlay, DELAY_BEFORE_COMPUTER_PLAY);
 }
 
 // TODO: impedir os jogadores de jogarem caso algum jogador ganhe a partida
-function gameOver(status) {
-	mainOutput.innerHTML = 'Game over!<br /><br />The winner is: ' + getWinner(status) + '.';
+function gameOver() {
+	mainOutput.innerHTML = 'Game over!<br /><br />The winner is: ' + getWinner() + '.';
 }
 
 function computerPlay() {
 	const positions = machine.move(board);
 	counter++;
-	let status = checkIsGameOver(positions.line, positions.column);
+	checkIsGameOver(positions.line, positions.column);
 	if (status != "running")
-		gameOver(status);
+		gameOver();
 }
 
 (function () {
@@ -77,7 +83,6 @@ function computerPlay() {
 
 })();
 
-// TODO: implementar o fim do jogo caso algum jogador ganhe a partida
 function checkIsGameOver(x, y) {
 	let lastPiece = board.rows[x].cells[y].innerHTML;
 	let hasWinner = true;
@@ -117,18 +122,14 @@ function checkIsGameOver(x, y) {
 
 
 	if (hasWinner === true) {
-		return lastPiece;
-	}
-	if (counter == (boardSize * boardSize)) {
+		status = lastPiece;
+	} else if (counter == (boardSize * boardSize)) {
 		console.log('terminou com board completo')
-		return 'draw';
+		status = 'draw';
 	}
-
-	return 'running';
 }
 
-// TODO: retornar o verdadeiro vencedor ou "empate"
-function getWinner(status) {
+function getWinner() {
 	if (status == playerPiece)
 		return 'Human player';
 	else if (status == 'draw')
