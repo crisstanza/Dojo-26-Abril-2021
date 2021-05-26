@@ -10,17 +10,17 @@ Dev.prototype.move = function(board) {
 		for (let j = 0 ; j < this.boardSize ; j++) {
 			let td = tr.cells[j];
 			if (!td.innerHTML) {
+				console.log('if', td.innerHTML, i, j)
 				td.innerHTML = this.piece;
-			} else {
-				if (td.innerHTML !== this.piece) {
-					let col = j + 1;
-					if (col === this.boardSize) {
-						continue;
-					}
-					board.rows[i].cells[col] = this.piece;
+				td.classList.add('fade-in');
+				return {line: i, column: j }
+			} else if (td.innerHTML !== this.piece) {
+				console.log('else', td.innerHTML, i, col)
+				let col = j + 1;
+				if (col < this.boardSize) {
+					tr.cells[col].innerHTML = this.piece;
 					return {line: i, column: col }
 				}
-				break; 
 			}
 		}
 	}
