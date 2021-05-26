@@ -15,9 +15,9 @@ Dev.prototype.move = function(board) {
 				td.classList.add('fade-in');
 				return {line: i, column: j }
 			} else if (td.innerHTML !== this.piece) {
-				console.log('else', td.innerHTML, i, col)
 				let col = j + 1;
-				if (col < this.boardSize) {
+				console.log('else', td.innerHTML, i, col)
+				if (col < this.boardSize && !tr.cells[col].innerHTML) {
 					tr.cells[col].innerHTML = this.piece;
 					return {line: i, column: col }
 				}
