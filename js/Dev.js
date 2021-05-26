@@ -12,8 +12,14 @@ Dev.prototype.move = function(board) {
 			if (!td.innerHTML) {
 				td.innerHTML = this.piece;
 			} else {
-				// capturar a ultiam jogada
-				td.text;
+				if (td.innerHTML !== this.piece) {
+					let col = j + 1;
+					if (col === this.boardSize) {
+						continue;
+					}
+					board.rows[i].cells[col] = this.piece;
+					return {line: i, column: col }
+				}
 				break; 
 			}
 		}
