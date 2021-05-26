@@ -86,27 +86,37 @@ function checkIsGameOver(x, y) {
 
 	let lastPiece = board.rows[x].cells[y].innerHTML;
 	let hasWinner = true;
-	// if (x === y) {
-	// 	for (let i = 0; hasWinner && i < boardSize; i++) {
-	// 		if (board.rows[i].cells[i].innerHTML != lastPiece) {
-	// 			hasWinner = false
-	// 		}
-	// 	}
-	// 	for (let i = 0; hasWinner && i < boardSize; i++) {
-	// 		if (board.rows[i].cells[i].innerHTML != lastPiece) {
-	// 			hasWinner = false
-	// 		}
-	// 	}
-	// }
-	for (let i = 0; hasWinner && i < boardSize; i++) {
-		if (board.rows[x].cells[i].innerHTML != lastPiece) {
+	for (let i = 0; i < boardSize; i++) {
+		if (board.rows[i].cells[i].innerHTML != lastPiece) {
 			hasWinner = false
+			break;
 		}
 	}
-
-	for (let i = 0; hasWinner && i < boardSize; i++) {
-		if (board.rows[i].cells[y].innerHTML != lastPiece) {
-			hasWinner = false
+	if (!hasWinner) {
+		hasWinner = true
+		for (let i = 0; i < boardSize; i++) {
+			if (board.rows[i].cells[boardSize-i].innerHTML != lastPiece) {
+				hasWinner = false
+				break;
+			}
+		}
+	}
+	if (!hasWinner) {
+		hasWinner = true
+		for (let i = 0; i < boardSize; i++) {
+			if (board.rows[x].cells[i].innerHTML != lastPiece) {
+				hasWinner = false
+				break;
+			}
+		}
+	}
+	if (!hasWinner) {
+		hasWinner = true
+		for (let i = 0; i < boardSize; i++) {
+			if (board.rows[i].cells[y].innerHTML != lastPiece) {
+				hasWinner = false
+				break;
+			}
 		}
 	}
 
