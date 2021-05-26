@@ -46,31 +46,31 @@ function td_OnClick(line, column) {
 	counter++;
 	td.innerHTML = playerPiece;
 	td.classList.add('fade-in');
-	let isGameOver = checkIsGameOver(line, column);
-	if (isGameOver)
-		gameOver();
+	let status = checkIsGameOver(line, column);
+	if (status != 'running')
+		gameOver(status);
 	else
 		setTimeout(computerPlay, DELAY_BEFORE_COMPUTER_PLAY);
 }
 
 // TODO: impedir os jogadores de jogarem caso algum jogador ganhe a partida
-function gameOver() {
-	mainOutput.innerHTML = 'Game over!<br /><br />The winner is: ' + getWinner() + '.';
+function gameOver(status) {
+	mainOutput.innerHTML = 'Game over!<br /><br />The winner is: ' + getWinner(status) + '.';
 }
 
 function computerPlay() {
 	const positions = machine.move(board);
 	counter++;
-	let isGameOver = checkIsGameOver(positions.line, positions.column);
-	if (isGameOver)
-		gameOver();
+	let status = checkIsGameOver(positions.line, positions.column);
+	if (status != "running")
+		gameOver(status);
 }
 
 (function () {
 
 	function init(event) {
 		// descomente a linha abaixo para facilitar os testes
-		// btStart_OnClick(event);
+		btStart_OnClick(event);
 	}
 
 	window.addEventListener('load', init);
@@ -79,11 +79,6 @@ function computerPlay() {
 
 // TODO: implementar o fim do jogo caso algum jogador ganhe a partida
 function checkIsGameOver(x, y) {
-	if (counter == (boardSize * boardSize)) {
-		console.log('terminou com board completo')
-		return true;
-	}
-
 	let lastPiece = board.rows[x].cells[y].innerHTML;
 	let hasWinner = true;
 	for (let i = 0; i < boardSize; i++) {
@@ -95,7 +90,7 @@ function checkIsGameOver(x, y) {
 	if (!hasWinner) {
 		hasWinner = true
 		for (let i = 0; i < boardSize; i++) {
-			if (board.rows[i].cells[boardSize-i].innerHTML != lastPiece) {
+			if (board.rows[i].cells[boardSize - i - 1].innerHTML != lastPiece) {
 				hasWinner = false
 				break;
 			}
@@ -120,19 +115,23 @@ function checkIsGameOver(x, y) {
 		}
 	}
 
+
 	if (hasWinner === true) {
-		console.log('terminou com um vencedor')
+		return lastPiece;
+	}
+	if (counter == (boardSize * boardSize)) {
+		console.log('terminou com board completo')
+		return 'draw';
 	}
 
-	return hasWinner
+	return 'running';
 }
 
 // TODO: retornar o verdadeiro vencedor ou "empate"
-function getWinner() {
-	let random = io.github.crisstanza.Randoms.getInt(1, 3)
-	if (random == 1)
+function getWinner(status) {
+	if (status == playerPiece)
 		return 'Human player';
-	else if (random == 2)
-		return 'Computer player';
-	return 'Draw';
+	else if (status == 'draw')
+		return 'Draw';
+	return 'Computer player';
 }
